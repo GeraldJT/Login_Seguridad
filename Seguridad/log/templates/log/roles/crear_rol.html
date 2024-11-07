@@ -1,0 +1,15 @@
+<!-- templates/roles/crear_rol.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Rol</title>
+</head>
+<body>
+    <h1>Crear Rol</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="text" name="descripcion" placeholder="Descripción" required>
+        <button type="submit">Crear</button>
+    </form>
+</body>
+</html>

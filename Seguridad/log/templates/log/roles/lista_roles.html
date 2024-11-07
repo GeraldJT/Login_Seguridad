@@ -1,0 +1,19 @@
+<!-- templates/roles/lista_roles.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Roles</title>
+</head>
+<body>
+    <h1>Roles</h1>
+    <a href="{% url 'crear_rol' %}">Crear Nuevo Rol</a>
+    <ul>
+        {% for rol in roles %}
+            <li>{{ rol.descripcion }}
+                <a href="{% url 'editar_rol' rol.id %}">Editar</a>
+                <a href="{% url 'eliminar_rol' rol.id %}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

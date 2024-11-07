@@ -1,0 +1,28 @@
+{% extends 'log/base.html' %} {% block title %}Dashboard{% endblock %} {% block
+    content %}
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="dashboard-menu">
+            <div class="dashboard-item">
+                <h2>Usuarios</h2>
+                <p>Gestionar usuarios del sistema</p>
+                <a href="{% url 'lista_usuarios' %}" class="btn-primary"
+                    >Ver Usuarios</a
+                >
+            </div>
+            <div class="dashboard-item">
+                <h2>Roles</h2>
+                <p>Gestionar roles y permisos</p>
+                <a href="{% url 'lista_roles' %}" class="btn-primary">Ver Roles</a>
+            </div>
+            <div class="dashboard-item">
+                <h2>Funciones</h2>
+                <p>Gestionar funciones del sistema</p>
+                <a href="{% url 'lista_funciones' %}" class="btn-primary"
+                    >Ver Funciones</a
+                >
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    

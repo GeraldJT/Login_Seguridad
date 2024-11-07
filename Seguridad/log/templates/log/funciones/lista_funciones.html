@@ -1,0 +1,19 @@
+<!-- templates/funciones/lista_funciones.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Funciones</title>
+</head>
+<body>
+    <h1>Funciones</h1>
+    <a href="{% url 'crear_funcion' %}">Crear Nueva Función</a>
+    <ul>
+        {% for funcion in funciones %}
+            <li>{{ funcion.descripcion }}
+                <a href="{% url 'editar_funcion' funcion.id %}">Editar</a>
+                <a href="{% url 'eliminar_funcion' funcion.id %}">Eliminar</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

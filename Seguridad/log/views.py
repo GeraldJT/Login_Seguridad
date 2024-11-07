@@ -70,6 +70,7 @@ def eliminar_rol(request, rol_id):
 # Listar Usuarios
 def lista_usuarios(request):
     usuarios = Usuario.objects.all()
+    print(usuarios +"jaja")
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
 
 # Crear Usuario
@@ -86,7 +87,7 @@ def crear_usuario(request):
         else:
             messages.error(request, 'El nombre de usuario ya existe.')
     
-    return render(request, 'usuarios/crear_usuario.html')
+    return render(request, 'log/usuarios/crear_usuario.html')
 
 # Editar Usuario
 def editar_usuario(request, usuario_id):
@@ -133,3 +134,22 @@ def asignar_rol_usuario(request, usuario_id):
         return redirect('lista_usuarios')
     
     return render(request, 'usuarios/asignar_rol_usuario.html', {'usuario': usuario, 'roles': roles})
+
+# Listar Usuarios con Permisos
+def lista_usuarios(request):
+    usuarios_con_permisos = Usuario.objects.all()
+    usuarios_con_permisos = []
+
+    for usuarios_con_permisos in usuarios_con_permisos:
+        permisos = Funcion.objects.filter(rolfuncion__rol__usuariorol__usuario=usuarios_con_permisos)
+        usuarios_con_permisos.append({
+            'usuario': usuarios_con_permisos,
+            'permisos': permisos
+        })
+
+        # Imprimir en la consola la información del usuario y sus permisos
+        print(f"Usuario: {usuarios_con_permisos.nombre} ({usuarios_con_permisos.user}) - Permisos:")
+        for permiso in permisos:
+            print(f"  - {permiso.descripcion}")
+    
+    return render(request, 'log/usuarios/lista_usuarios.html', {'usuarios_con_permisos': usuarios_con_permisos})

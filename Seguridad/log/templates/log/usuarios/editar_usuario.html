@@ -1,0 +1,18 @@
+<!-- templates/usuarios/editar_usuario.html -->
+<!-- templates/usuarios/editar_usuario.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Usuario</title>
+</head>
+<body>
+    <h1>Editar Usuario</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="text" name="nombre" value="{{ usuario.nombre }}" required>
+        <input type="text" name="user" value="{{ usuario.user }}" required>
+        <input type="password" name="password" value="{{ usuario.password }}" required>
+        <button type="submit">Guardar cambios</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!-- templates/usuarios/lista_usuarios.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Usuarios</title>
+</head>
+<body>
+    <h1>Usuarios</h1>
+    <a href="{% url 'crear_usuario' %}">Crear Nuevo Usuario</a>
+    <ul>
+        
+        {{usuarios}} test
+        {% for item in usuarios_con_permisos %}
+            <li>
+                <strong>{{ item.usuarios.nombre }} - {{ item.usuarios.user }}</strong>
+                <a href="{% url 'editar_usuario' item.usuario.id %}">Editar</a>
+                <a href="{% url 'eliminar_usuario' item.usuario.id %}">Eliminar</a>
+                <a href="{% url 'asignar_rol_usuario' usuario.id %}">Asignar Rol</a>
+                <ul>
+                    <li><strong>Permisos:</strong></li>
+                    {% for permiso in item.permisos %}
+                        <li>{{ permiso.descripcion }}</li>
+                    {% empty %}
+                        <li>Sin permisos asignados</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

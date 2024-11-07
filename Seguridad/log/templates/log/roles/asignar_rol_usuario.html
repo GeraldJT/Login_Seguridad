@@ -1,0 +1,32 @@
+{% extends 'log/base.html' %} {% block title %}Asignar Función a Rol{% endblock
+    %} {% block content %}
+    <div class="container">
+        <h1>Asignar Función al Rol: {{ rol.descripcion }}</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="funcion">Seleccionar Función:</label>
+                <select id="funcion" name="funcion" required>
+                    <option value="">Seleccione una función</option>
+                    {% for funcion in funciones %}
+                    <option value="{{ funcion.id }}">
+                        {{ funcion.descripcion }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn-submit">Asignar</button>
+            <a href="{% url 'lista_roles' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    
+        <h2>Funciones Actuales:</h2>
+        <div class="current-functions">
+            {% for funcion in rol.funciones.all %}
+            <span class="badge">{{ funcion.descripcion }}</span>
+            {% empty %}
+            <p>No hay funciones asignadas</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endblock %}
+    

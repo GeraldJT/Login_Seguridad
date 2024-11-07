@@ -1,0 +1,15 @@
+<!-- templates/funciones/editar_funcion.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Función</title>
+</head>
+<body>
+    <h1>Editar Función</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="text" name="descripcion" value="{{ funcion.descripcion }}" required>
+        <button type="submit">Guardar cambios</button>
+    </form>
+</body>
+</html>

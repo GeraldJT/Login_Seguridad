@@ -1,0 +1,18 @@
+<!-- templates/usuarios/crear_usuario.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Usuario</title>
+</head>
+<body>
+    <h1>Crear Usuario</h1>
+<form method="POST">
+    {% csrf_token %}
+    <label>Nombre:</label><input type="text" name="nombre" required><br>
+    <label>Usuario:</label><input type="text" name="user" required><br>
+    <label>Contraseña:</label><input type="password" name="password" required><br>
+    <button type="submit">Guardar</button>
+</form>
+</body>
+</html>
+

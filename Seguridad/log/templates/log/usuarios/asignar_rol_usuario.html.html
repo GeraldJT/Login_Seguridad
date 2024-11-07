@@ -1,0 +1,19 @@
+<!-- templates/roles/asignar_funcion_rol.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Asignar Función a Rol</title>
+</head>
+<body>
+    <h1>Asignar Función a Rol: {{ rol.descripcion }}</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <select name="funcion" required>
+            {% for funcion in funciones %}
+                <option value="{{ funcion.id }}">{{ funcion.descripcion }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Asignar</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!-- templates/roles/editar_rol.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editar Rol</title>
+</head>
+<body>
+    <h1>Editar Rol</h1>
+    <form method="post" action="">
+        {% csrf_token %}
+        <input type="text" name="descripcion" value="{{ rol.descripcion }}" required>
+        <button type="submit">Guardar cambios</button>
+    </form>
+</body>
+</html>
