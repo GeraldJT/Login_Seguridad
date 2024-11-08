@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.hashers import make_password, check_password
+
 
 class Funcion(models.Model):
     id = models.AutoField(primary_key=True, db_column='idFunciones')
@@ -31,7 +33,7 @@ class Usuario(models.Model):
     id = models.AutoField(primary_key=True, db_column='idUsuarios')
     nombre = models.CharField(max_length=45)
     user = models.CharField(max_length=45, unique=True)
-    password = models.CharField(max_length=45)
+    password = models.CharField(max_length=128)  # Aumenta el tamaño para almacenar el hash
 
     class Meta:
         db_table = 'Usuarios'
@@ -40,6 +42,17 @@ class Usuario(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    # Sobreescribe el método `save` para encriptar la contraseña antes de guardarla
+    def save(self, *args, **kwargs):
+        # Encripta la contraseña solo si no está encriptada ya
+        if not self.password.startswith('pbkdf2_'):
+            self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
+    # Método para verificar la contraseña
+    def check_password(self, raw_password):
+        return check_password(raw_password, self.password)
 
 
 class RolFuncion(models.Model):

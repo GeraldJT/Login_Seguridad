@@ -2,6 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Funcion, Rol, Usuario, RolFuncion, UsuarioRol
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth import logout
+
 
 def login(request):
     if request.method == 'POST':
@@ -10,15 +14,48 @@ def login(request):
         
         try:
             # Intenta obtener el usuario de tu modelo personalizado
-            user = Usuario.objects.get(user=username, password=password)
-            # Puedes usar una sesión para "logear" al usuario
-            request.session['user_id'] = user.id
-            messages.success(request, f"Bienvenido {user.nombre}")
-            return redirect('dashboard')  # Redirige a la página de inicio después del login
+            user = Usuario.objects.get(user=username)
+            
+            # Verifica la contraseña encriptada con `check_password`
+            if check_password(password, user.password):
+                # Si la contraseña es correcta, se guarda en la sesión
+                request.session['user_id'] = user.id
+                messages.success(request, f"Bienvenido {user.nombre}")
+                return redirect('dashboard')  # Redirige a la página de inicio después del login
+            else:
+                messages.error(request, 'Usuario o contraseña incorrectos')
         except Usuario.DoesNotExist:
             messages.error(request, 'Usuario o contraseña incorrectos')
 
     return render(request, 'login.html')
+
+
+# views.py
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import RegistroUsuarioForm
+
+def registrar_usuario(request):
+    if request.method == 'POST':
+        form = RegistroUsuarioForm(request.POST)
+        
+        if form.is_valid():
+            # Guarda el nuevo usuario con la contraseña encriptada
+            form.save()
+            messages.success(request, 'Usuario registrado correctamente.')
+            return redirect('login')  # Redirige a la página de login después del registro
+        else:
+            messages.error(request, 'Error al registrar el usuario. Verifica los datos.')
+    else:
+        form = RegistroUsuarioForm()
+    
+    return render(request, 'registro.html', {'form': form})
+
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 # Listar Funciones
 def dashboard(request):
