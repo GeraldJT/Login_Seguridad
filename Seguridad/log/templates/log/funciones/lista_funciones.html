@@ -1,19 +1,32 @@
 <!-- templates/funciones/lista_funciones.html -->
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Lista de Funciones</title>
+    <link rel="stylesheet" href="{% static 'log/stylesListFun.css' %}">
 </head>
 <body>
     <h1>Funciones</h1>
-    <a href="{% url 'crear_funcion' %}">Crear Nueva Función</a>
-    <ul>
-        {% for funcion in funciones %}
-            <li>{{ funcion.descripcion }}
-                <a href="{% url 'editar_funcion' funcion.id %}">Editar</a>
-                <a href="{% url 'eliminar_funcion' funcion.id %}">Eliminar</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <a href="{% url 'crear_funcion' %}" class="button">Crear Nueva Función</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for funcion in funciones %}
+                <tr>
+                    <td>{{ funcion.descripcion }}</td>
+                    <td>
+                        <a href="{% url 'editar_funcion' funcion.id %}" class="button edit">Editar</a>
+                        <a href="{% url 'eliminar_funcion' funcion.id %}" class="button delete">Eliminar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

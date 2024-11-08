@@ -1,29 +1,49 @@
 <!-- templates/usuarios/lista_usuarios.html -->
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
     <title>Lista de Usuarios</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'log/styles.css' %}">
 </head>
 <body>
-    <h1>Usuarios</h1>
-    <a href="{% url 'crear_usuario' %}">Crear Nuevo Usuario</a>
-    <ul>       
-        {% for item in usuarios_con_permisos %}
-            <li>
-                <strong>{{ item.usuario.nombre }} - {{ item.usuario.user }}</strong>
-                <a href="{% url 'editar_usuario' item.usuario.id %}">Editar</a>
-                <a href="{% url 'eliminar_usuario' item.usuario.id %}">Eliminar</a>
-                <a href="{% url 'asignar_rol_usuario' item.usuario.id %}">Asignar Rol</a>
-                <ul>
-                    <li><strong>Permisos:</strong></li>
-                    {% for permiso in item.permisos %}
-                        <li>{{ permiso.descripcion }}</li>
-                    {% empty %}
-                        <li>Sin permisos asignados</li>
-                    {% endfor %}
-                </ul>
-            </li>
-        {% endfor %}
-    </ul>
+    
+        <h1>Usuarios</h1>
+        <a href="{% url 'crear_usuario' %}" class="btn-primary">Crear Nuevo Usuario</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Usuario</th>
+                <th>Permisos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in usuarios_con_permisos %}
+            <tr>
+                <td>{{ item.usuario.nombre }}</td>
+                <td>{{ item.usuario.user }}</td>
+                <td>
+                    {% if item.permisos %}
+                        <ul>
+                            {% for permiso in item.permisos %}
+                                <li>{{ permiso.descripcion }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        Sin permisos asignados
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'editar_usuario' item.usuario.id %}" class="btn-primary">Editar</a>
+                    <a href="{% url 'eliminar_usuario' item.usuario.id %}" class="btn-danger">Eliminar</a>
+                    <a href="{% url 'asignar_rol_usuario' item.usuario.id %}" class="btn-secondary">Asignar Rol</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

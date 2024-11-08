@@ -1,17 +1,21 @@
 <!-- templates/usuarios/editar_usuario.html -->
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Editar Usuario</title>
+    <link rel="stylesheet" href="{% static 'log/stylesEditUser.css' %}">
 </head>
 <body>
-    <h1>Editar Usuario</h1>
-    <form method="post" action="">
-        {% csrf_token %}
-        <input type="text" name="nombre" value="{{ usuario.nombre }}" required>
-        <input type="text" name="user" value="{{ usuario.user }}" required>
-        <input type="password" name="password" value="{{ usuario.password }}" required>
-        <button type="submit">Guardar cambios</button>
-    </form>
+    <div class="container">
+        <h1>Editar Usuario</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="text" name="nombre" value="{{ usuario.nombre }}" required placeholder="Nombre">
+            <input type="text" name="user" value="{{ usuario.user }}" required placeholder="Usuario">
+            <input type="password" name="password" value="{{ usuario.password }}" required placeholder="Contraseña">
+            <button type="submit">Guardar cambios</button>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,0 +1,67 @@
+/* static/log/stylesRoles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f3f4f6;
+    color: #333;
+}
+
+h1 {
+    color: #333;
+}
+
+.table-container {
+    margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    border-collapse: collapse;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.action-link {
+    margin-right: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.action-link:hover {
+    text-decoration: underline;
+}
+
+.btn-create {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 8px 16px;
+    color: #fff;
+    background-color: #007bff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn-create:hover {
+    background-color: #0056b3;
+}
+
+.message-list {
+    color: green;
+    margin-bottom: 20px;
+}

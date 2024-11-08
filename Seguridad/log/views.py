@@ -14,18 +14,21 @@ def login(request):
             # Puedes usar una sesión para "logear" al usuario
             request.session['user_id'] = user.id
             messages.success(request, f"Bienvenido {user.nombre}")
-            return redirect('lista_usuarios')  # Redirige a la página de inicio después del login
+            return redirect('dashboard')  # Redirige a la página de inicio después del login
         except Usuario.DoesNotExist:
             messages.error(request, 'Usuario o contraseña incorrectos')
 
     return render(request, 'login.html')
 
 # Listar Funciones
+def dashboard(request):
+    return render (request, 'dashboard.html')
+
 def lista_funciones(request):
     if 'user_id' not in request.session:
         return redirect('login')
     funciones = Funcion.objects.all()
-    return render(request, 'funciones/lista_funciones.html', {'funciones': funciones})
+    return render(request, 'log/funciones/lista_funciones.html', {'funciones': funciones})
 
 # Crear Funcion
 def crear_funcion(request):
@@ -34,7 +37,7 @@ def crear_funcion(request):
         Funcion.objects.create(descripcion=descripcion)
         messages.success(request, 'Función creada exitosamente.')
         return redirect('lista_funciones')
-    return render(request, 'funciones/crear_funcion.html')
+    return render(request, 'log/funciones/crear_funcion.html')
 
 # Editar Funcion
 def editar_funcion(request, funcion_id):
@@ -44,7 +47,7 @@ def editar_funcion(request, funcion_id):
         funcion.save()
         messages.success(request, 'Función actualizada correctamente.')
         return redirect('lista_funciones')
-    return render(request, 'funciones/editar_funcion.html', {'funcion': funcion})
+    return render(request, 'log/funciones/editar_funcion.html', {'funcion': funcion})
 
 # Eliminar Funcion
 def eliminar_funcion(request, funcion_id):
@@ -56,7 +59,7 @@ def eliminar_funcion(request, funcion_id):
 # Listar Roles
 def lista_roles(request):
     roles = Rol.objects.all()
-    return render(request, 'roles/lista_roles.html', {'roles': roles})
+    return render(request, 'log/roles/lista_roles.html', {'roles': roles})
 
 # Crear Rol
 def crear_rol(request):
@@ -65,7 +68,7 @@ def crear_rol(request):
         Rol.objects.create(descripcion=descripcion)
         messages.success(request, 'Rol creado exitosamente.')
         return redirect('lista_roles')
-    return render(request, 'roles/crear_rol.html')
+    return render(request, 'log/roles/crear_rol.html')
 
 # Editar Rol
 def editar_rol(request, rol_id):
@@ -75,7 +78,7 @@ def editar_rol(request, rol_id):
         rol.save()
         messages.success(request, 'Rol actualizado correctamente.')
         return redirect('lista_roles')
-    return render(request, 'roles/editar_rol.html', {'rol': rol})
+    return render(request, 'log/roles/editar_funcion_rol.html', {'rol': rol})
 
 # Eliminar Rol
 def eliminar_rol(request, rol_id):
@@ -116,7 +119,7 @@ def editar_usuario(request, usuario_id):
         messages.success(request, 'Usuario actualizado correctamente.')
         return redirect('lista_usuarios')
     
-    return render(request, 'usuarios/editar_usuario.html', {'usuario': usuario})
+    return render(request, 'log/usuarios/editar_usuario.html', {'usuario': usuario})
 
 # Eliminar Usuario
 def eliminar_usuario(request, usuario_id):
@@ -136,7 +139,7 @@ def asignar_funcion_rol(request, rol_id):
         messages.success(request, 'Función asignada exitosamente al rol.')
         return redirect('lista_roles')
     
-    return render(request, 'roles/asignar_funcion_rol.html', {'rol': rol, 'funciones': funciones})
+    return render(request, 'log/roles/asignar_funcion_rol.html', {'rol': rol, 'funciones': funciones})
 
 def asignar_rol_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
@@ -149,7 +152,7 @@ def asignar_rol_usuario(request, usuario_id):
         messages.success(request, 'Rol asignado exitosamente.')
         return redirect('lista_usuarios')
     
-    return render(request, 'usuarios/asignar_rol_usuario.html', {'usuario': usuario, 'roles': roles})
+    return render(request, 'log/usuarios/asignar_rol_usuario.html', {'usuario': usuario, 'roles': roles})
 
 # Listar Usuarios con Permisos
 def lista_usuarios(request):    
