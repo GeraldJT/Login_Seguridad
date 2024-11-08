@@ -1,3 +1,4 @@
+import random
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Funcion, Rol, Usuario, RolFuncion, UsuarioRol
@@ -5,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth import logout
+
 
 
 def login(request):
@@ -33,23 +35,9 @@ def login(request):
 # views.py
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import RegistroUsuarioForm
+from .forms import UsuarioForm
 
-def registrar_usuario(request):
-    if request.method == 'POST':
-        form = RegistroUsuarioForm(request.POST)
-        
-        if form.is_valid():
-            # Guarda el nuevo usuario con la contraseña encriptada
-            form.save()
-            messages.success(request, 'Usuario registrado correctamente.')
-            return redirect('login')  # Redirige a la página de login después del registro
-        else:
-            messages.error(request, 'Error al registrar el usuario. Verifica los datos.')
-    else:
-        form = RegistroUsuarioForm()
-    
-    return render(request, 'registro.html', {'form': form})
+
 
 
 
@@ -209,3 +197,64 @@ def lista_usuarios(request):
             print(f"  - {permiso.descripcion}")
 
     return render(request, 'log/usuarios/lista_usuarios.html', {'usuarios_con_permisos': usuarios_con_permisos})
+
+
+from django.core.mail import send_mail
+from django.conf import settings
+
+def generar_codigo_verificacion():
+    """Genera un código de verificación aleatorio de 6 dígitos."""
+    return random.randint(100000, 999999)
+
+def enviar_codigo_verificacion(email, codigo):
+    """Envía el código de verificación al correo del usuario."""
+    subject = 'Código de verificación de registro'
+    message = f'Este es tu código de verificación: {codigo}'
+    send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+
+def registro(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            # Guardar el nuevo usuario sin la contraseña encriptada
+            usuario = form.save(commit=False)
+            usuario.password = usuario.password  # Guarda la contraseña sin encriptar aún
+            usuario.save()
+
+            # Generar y enviar el código de verificación
+            codigo = generar_codigo_verificacion()
+            enviar_codigo_verificacion(usuario.email, codigo)
+            
+            # Puedes guardar el código en el usuario o en un modelo de verificación separado
+            request.session['codigo_verificacion'] = codigo  # Guardamos el código en la sesión
+            request.session['usuario_id'] = usuario.id  # Guardamos el ID del usuario
+
+            messages.success(request, 'Registro exitoso. Te hemos enviado un código de verificación a tu correo.')
+            return redirect('verificar_codigo')  # Redirigir a una vista para verificar el código
+        else:
+            messages.error(request, 'Por favor, revisa los errores en el formulario.')
+    else:
+        form = UsuarioForm()
+
+    return render(request, 'registro.html', {'form': form})
+
+
+
+def verificar_codigo(request):
+    if request.method == 'POST':
+        codigo_ingresado = request.POST.get('codigo')
+        codigo_guardado = request.session.get('codigo_verificacion')
+
+        if str(codigo_ingresado) == str(codigo_guardado):
+            # Si el código es correcto, activar el usuario
+            usuario_id = request.session.get('usuario_id')
+            usuario = Usuario.objects.get(id=usuario_id)
+            usuario.is_active = True  # O cualquier otra lógica para marcar el usuario como verificado
+            usuario.save()
+
+            messages.success(request, 'Cuenta verificada correctamente. Ahora puedes iniciar sesión.')
+            return redirect('login')  # Redirige a la página de login
+        else:
+            messages.error(request, 'Código incorrecto. Intenta nuevamente.')
+
+    return render(request, 'verificar_codigo.html')

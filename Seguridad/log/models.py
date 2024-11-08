@@ -32,6 +32,7 @@ class Rol(models.Model):
 class Usuario(models.Model):
     id = models.AutoField(primary_key=True, db_column='idUsuarios')
     nombre = models.CharField(max_length=45)
+    email = models.EmailField()
     user = models.CharField(max_length=45, unique=True)
     password = models.CharField(max_length=128)  # Aumenta el tamaño para almacenar el hash
 

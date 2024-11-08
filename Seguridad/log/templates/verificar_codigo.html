@@ -3,17 +3,19 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Registro</title>
+    <title>Verificar código</title>
     <link rel="stylesheet" type="text/css" href="{% static 'log/styles.css' %}">
 </head>
 <body>
     <div class="login-container">
         <div class="login-box">
-            <h1>Crear una cuenta</h1>
+            <h1>Verificar código de registro</h1>
             <form method="post">
                 {% csrf_token %}
-                {{ form.as_p }}  <!-- Muestra el formulario con los campos -->
-                <button type="submit" class="btn-login">Registrarme</button>
+                <div class="form-group">
+                    <input type="text" name="codigo" placeholder="Código de verificación" required>
+                </div>
+                <button type="submit" class="btn-login">Verificar</button>
             </form>
             <div class="messages">
                 {% if messages %}
