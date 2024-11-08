@@ -132,3 +132,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'denis.cuencab@gmail.com'  # Tu dirección de correo Gmail
 EMAIL_HOST_PASSWORD = 'mgfp zgwc xbvf ihuj'  # Tu contraseña de Gmail (o la contraseña de la app si usas verificación en 2 pasos)
 DEFAULT_FROM_EMAIL = 'denis.cuencab@gmail.com'  # Dirección de envío predeterminada
+LOGOUT_REDIRECT_URL = '/'

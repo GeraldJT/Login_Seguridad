@@ -25,11 +25,28 @@ class UsuarioRolInline(admin.TabularInline):
 
 
 # Admin personalizado para Usuario, incluyendo sus roles
+class UsuarioRolInline(admin.TabularInline):
+    model = UsuarioRol
+    extra = 1
+
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nombre', 'user')
+    list_display = ('id', 'nombre', 'user', 'mostrar_roles', 'mostrar_funciones')
     inlines = [UsuarioRolInline]
 
+    def mostrar_roles(self, obj):
+        # Obtenemos los roles asignados al usuario
+        roles = Rol.objects.filter(usuariorol__usuario=obj)
+        return ", ".join([rol.descripcion for rol in roles])
+
+    def mostrar_funciones(self, obj):
+        # Obtenemos las funciones asignadas a través de los roles del usuario
+        funciones = Funcion.objects.filter(rolfuncion__rol__usuariorol__usuario=obj).distinct()
+        return ", ".join([funcion.descripcion for funcion in funciones])
+
+    # Añadimos etiquetas para los campos personalizados
+    mostrar_roles.short_description = 'Roles'
+    mostrar_funciones.short_description = 'Funciones'
 
 # Admin personalizado para Funcion
 @admin.register(Funcion)
