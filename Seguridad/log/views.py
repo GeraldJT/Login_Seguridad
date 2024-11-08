@@ -23,7 +23,7 @@ def login(request):
                 # Si la contraseña es correcta, se guarda en la sesión
                 request.session['user_id'] = user.id
                 messages.success(request, f"Bienvenido {user.nombre}")
-                return redirect('/admin/log/usuario/')  # Redirige a la página de inicio después del login
+                return redirect('dashboard')  # Redirige a la página de inicio después del login
             else:
                 messages.error(request, 'Usuario o contraseña incorrectos')
         except Usuario.DoesNotExist:
