@@ -2,13 +2,13 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.hola_mundo, name='login.html'),
+    path('', views.login, name='login'),
     # URLs de usuarios
     path('usuarios/', views.lista_usuarios, name='lista_usuarios'),
     path('usuarios/crear/', views.crear_usuario, name='crear_usuario'),
     path('usuarios/editar/<int:usuario_id>/', views.editar_usuario, name='editar_usuario'),
     path('usuarios/eliminar/<int:usuario_id>/', views.eliminar_usuario, name='eliminar_usuario'),
-    path('usuarios/<int:usuario_id>/asignar_rol/', views.asignar_rol_usuario, name='asignar_rol_usuario'),
+    path('usuarios/asignar_rol_usuarios/<int:usuario_id>', views.asignar_rol_usuario, name='asignar_rol_usuario'),
   
 
     # URLs de roles

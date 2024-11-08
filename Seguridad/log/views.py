@@ -1,12 +1,29 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Funcion, Rol, Usuario, RolFuncion, UsuarioRol
+from django.contrib.auth import authenticate, login
 
-def hola_mundo(request):
-    return render(request,'login.html')
+def login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        try:
+            # Intenta obtener el usuario de tu modelo personalizado
+            user = Usuario.objects.get(user=username, password=password)
+            # Puedes usar una sesión para "logear" al usuario
+            request.session['user_id'] = user.id
+            messages.success(request, f"Bienvenido {user.nombre}")
+            return redirect('lista_usuarios')  # Redirige a la página de inicio después del login
+        except Usuario.DoesNotExist:
+            messages.error(request, 'Usuario o contraseña incorrectos')
+
+    return render(request, 'login.html')
 
 # Listar Funciones
 def lista_funciones(request):
+    if 'user_id' not in request.session:
+        return redirect('login')
     funciones = Funcion.objects.all()
     return render(request, 'funciones/lista_funciones.html', {'funciones': funciones})
 
@@ -70,7 +87,6 @@ def eliminar_rol(request, rol_id):
 # Listar Usuarios
 def lista_usuarios(request):
     usuarios = Usuario.objects.all()
-    print(usuarios +"jaja")
     return render(request, 'usuarios/lista_usuarios.html', {'usuarios': usuarios})
 
 # Crear Usuario
@@ -136,20 +152,20 @@ def asignar_rol_usuario(request, usuario_id):
     return render(request, 'usuarios/asignar_rol_usuario.html', {'usuario': usuario, 'roles': roles})
 
 # Listar Usuarios con Permisos
-def lista_usuarios(request):
-    usuarios_con_permisos = Usuario.objects.all()
+def lista_usuarios(request):    
     usuarios_con_permisos = []
 
-    for usuarios_con_permisos in usuarios_con_permisos:
-        permisos = Funcion.objects.filter(rolfuncion__rol__usuariorol__usuario=usuarios_con_permisos)
+    # Itera sobre cada usuario y obtén sus permisos
+    for usuario in Usuario.objects.all():
+        permisos = Funcion.objects.filter(roles__usuariorol__usuario=usuario)
         usuarios_con_permisos.append({
-            'usuario': usuarios_con_permisos,
+            'usuario': usuario,
             'permisos': permisos
         })
 
         # Imprimir en la consola la información del usuario y sus permisos
-        print(f"Usuario: {usuarios_con_permisos.nombre} ({usuarios_con_permisos.user}) - Permisos:")
+        print(f"Usuario: {usuario.nombre} ({usuario.user}) - Permisos:")
         for permiso in permisos:
             print(f"  - {permiso.descripcion}")
-    
+
     return render(request, 'log/usuarios/lista_usuarios.html', {'usuarios_con_permisos': usuarios_con_permisos})

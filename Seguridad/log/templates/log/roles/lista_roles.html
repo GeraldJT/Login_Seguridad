@@ -1,18 +1,44 @@
 <!-- templates/roles/lista_roles.html -->
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+    <meta charset="UTF-8">
     <title>Lista de Roles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .action-link {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>Roles</h1>
-    <a href="{% url 'crear_rol' %}">Crear Nuevo Rol</a>
+    
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <a href="{% url 'crear_rol' %}" class="action-link">Crear Nuevo Rol</a>
+
     <ul>
         {% for rol in roles %}
-            <li>{{ rol.descripcion }}
-                <a href="{% url 'editar_rol' rol.id %}">Editar</a>
-                <a href="{% url 'eliminar_rol' rol.id %}">Eliminar</a>
+            <li>
+                {{ rol.descripcion }}
+                <a href="{% url 'editar_rol' rol.id %}" class="action-link">Editar</a>
+                <a href="{% url 'eliminar_rol' rol.id %}" class="action-link">Eliminar</a>
             </li>
+        {% empty %}
+            <li>No hay roles disponibles.</li>
         {% endfor %}
     </ul>
 </body>
