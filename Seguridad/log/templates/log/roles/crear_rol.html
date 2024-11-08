@@ -1,15 +1,19 @@
 <!-- templates/roles/crear_rol.html -->
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>Crear Rol</title>
+    <link rel="stylesheet" href="{% static 'log/stylesCreateRole.css' %}">
 </head>
 <body>
-    <h1>Crear Rol</h1>
-    <form method="post" action="">
-        {% csrf_token %}
-        <input type="text" name="descripcion" placeholder="Descripción" required>
-        <button type="submit">Crear</button>
-    </form>
+    <div class="container">
+        <h1>Crear Rol</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <input type="text" name="descripcion" placeholder="Descripción" required>
+            <button type="submit">Crear</button>
+        </form>
+    </div>
 </body>
 </html>
